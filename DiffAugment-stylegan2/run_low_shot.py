@@ -59,7 +59,8 @@ def run(dataset, resolution, result_dir, DiffAugment, num_gpus, batch_size, tota
     sc.num_gpus = num_gpus
     desc += '-%dgpu' % num_gpus
     sched.minibatch_size_base = batch_size
-    sched.minibatch_gpu_base = batch_size // num_gpus
+    # hard coded 4 image per gpu
+    sched.minibatch_gpu_base = 4
 
     G.impl = D.impl = impl
     if fmap_base is not None:
