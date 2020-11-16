@@ -61,6 +61,7 @@ def run(dataset, resolution, result_dir, DiffAugment, num_gpus, batch_size, tota
     sched.minibatch_size_base = batch_size
     # hard coded 4 image per gpu
     sched.minibatch_gpu_base = 4
+    print(f'Training using bs {sched.minibatch_gpu_base} per gpu')
 
     G.impl = D.impl = impl
     if fmap_base is not None:

@@ -15,7 +15,6 @@ import numpy as np
 import tensorflow as tf
 import PIL.Image
 import dnnlib
-import cv2
 from tqdm import tqdm
 
 # ----------------------------------------------------------------------------
