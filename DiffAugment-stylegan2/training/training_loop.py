@@ -151,13 +151,16 @@ def training_loop(
         save_tf_graph=False,    # Include full TensorFlow computation graph in the tfevents file?
         save_weight_histograms=False,    # Include weight histograms in the tfevents file?
         # Network pickle to resume training from, None = train from scratch.
-        resume_pkl='/root/data-efficient-gans/DiffAugment-stylegan2/results/00002-DiffAugment-stylegan2-data-1024-batch16-4gpu-fmap8196-color-translation-cutout/network-snapshot-000401.pkl',
+        resume_pkl=None,
         # Assumed training progress at the beginning. Affects reporting and training schedule.
-        resume_kimg=400.0,
+        resume_kimg=0.0,
         # Assumed wallclock time at the beginning. Affects reporting.
         resume_time=0.0,
         resume_with_new_nets=False):   # Construct new networks according to G_args and D_args before resuming training?
 
+    resume_pkl = '/root/data-efficient-gans/DiffAugment-stylegan2/results/00002-DiffAugment-stylegan2-data-1024-batch16-4gpu-fmap8196-color-translation-cutout/network-snapshot-000401.pkl'
+    resume_kimg = 400.0
+    print(f"Resume from {resume_pkl}@{resume_kimg}")
     if ema_start_kimg is None:
         ema_start_kimg = G_ema_kimg
 
