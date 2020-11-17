@@ -1,1 +1,1 @@
-python run_low_shot.py --dataset=/home/kunato/dataset/fashion_video/crop --resolution=1024 --fmap-base=8192 --batch-size=32
+python run_low_shot.py --dataset="/root/data" --resolution=1024 --fmap-base=8196 --total-kimg=600 --batch-size=16 --num-gpus=4
