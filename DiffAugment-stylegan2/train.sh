@@ -1,1 +1,1 @@
-python run_low_shot.py --dataset="/root/data" --resolution=1024 --fmap-base=8196 --total-kimg=600 --batch-size=16 --num-gpus=4
+python run_low_shot.py --dataset="/root/data" --resolution=1024 --fmap-base=8196 --total-kimg=10000 --batch-size=16 --num-gpus=4
