@@ -14,6 +14,7 @@ import glob
 import numpy as np
 import tensorflow as tf
 import PIL.Image
+import PIL.ImageOps
 import dnnlib
 from tqdm import tqdm
 
@@ -156,7 +157,7 @@ def create_from_lmdb(data_dir, resolution=None, tfrecord_dir=None, max_images=No
     return tfrecord_dir
 
 
-def create_from_images(data_dir, resolution=None, tfrecord_dir=None, shuffle=True):
+def create_from_images(data_dir, resolution=None, tfrecord_dir=None, shuffle=True, pad=True):
     if tfrecord_dir is None:
         tfrecord_dir = data_dir
     print('Loading images from "%s"' % data_dir)
@@ -186,16 +187,30 @@ def create_from_images(data_dir, resolution=None, tfrecord_dir=None, shuffle=Tru
             try:
                 img = PIL.Image.open(image_filenames[order[idx]])
                 if resolution is not None:
-                    img = img.resize((resolution, resolution),
-                                     PIL.Image.ANTIALIAS)
+                    if pad:
+                        img_w, img_h = img.size
+                        resize_res_w = resolution if img_w < img_h else img_h / img_w * resolution
+                        resize_res_h = resolution if img_h < img_w else img_w / img_h * resolution
+                        img = img.resize((int(resize_res_w), int(resize_res_h)),
+                                         PIL.Image.ANTIALIAS)
+                        img_w, img_h = img.size
+                        border_w = (resolution - img_w) // 2
+                        border_h = (resolution - img_h) // 2
+                        border_size = (border_w, border_h)
+                        img = PIL.ImageOps.expand(img, border=border_size)
+                        img = img.resize((resolution, resolution),
+                                         PIL.Image.BILINEAR)
+                    else:
+                        img = img.resize((resolution, resolution),
+                                         PIL.Image.ANTIALIAS)
                 img = np.asarray(img)
                 if channels == 1 or len(img.shape) == 2:
                     img = np.stack([img] * channels)  # HW => CHW
                 else:
                     img = img.transpose([2, 0, 1])  # HWC => CHW
                 tfr.add_image(img)
-            except Exception:
-                print('')
+            except Exception as e:
+                print(e)
     return tfrecord_dir
 
 
