@@ -157,7 +157,8 @@ def create_from_lmdb(data_dir, resolution=None, tfrecord_dir=None, max_images=No
     return tfrecord_dir
 
 
-def create_from_images(data_dir, resolution=None, tfrecord_dir=None, shuffle=True, pad=True):
+def create_from_images(data_dir, resolution=None, tfrecord_dir=None, shuffle=True):
+    pad = True
     if tfrecord_dir is None:
         tfrecord_dir = data_dir
     print('Loading images from "%s"' % data_dir)
@@ -187,6 +188,7 @@ def create_from_images(data_dir, resolution=None, tfrecord_dir=None, shuffle=Tru
             try:
                 img = PIL.Image.open(image_filenames[order[idx]])
                 if resolution is not None:
+                    print('process by padding')
                     if pad:
                         img_w, img_h = img.size
                         resize_res_w = resolution if img_w < img_h else img_h / img_w * resolution
