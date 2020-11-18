@@ -191,13 +191,14 @@ def create_from_images(data_dir, resolution=None, tfrecord_dir=None, shuffle=Tru
                         img_w, img_h = img.size
                         resize_res_w = resolution if img_w < img_h else img_h / img_w * resolution
                         resize_res_h = resolution if img_h < img_w else img_w / img_h * resolution
-                        img = img.resize((int(resize_res_w), int(resize_res_h)),
+                        img = img.resize((int(resize_res_h), int(resize_res_w)),
                                          PIL.Image.ANTIALIAS)
                         img_w, img_h = img.size
                         border_w = (resolution - img_w) // 2
                         border_h = (resolution - img_h) // 2
                         border_size = (border_w, border_h)
-                        img = PIL.ImageOps.expand(img, border=border_size)
+                        img = PIL.ImageOps.expand(
+                            img, border=border_size, fill=(255, 255, 255))
                         img = img.resize((resolution, resolution),
                                          PIL.Image.BILINEAR)
                     else:
