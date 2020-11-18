@@ -206,6 +206,8 @@ def create_from_images(data_dir, resolution=None, tfrecord_dir=None, shuffle=Tru
                     else:
                         img = img.resize((resolution, resolution),
                                          PIL.Image.ANTIALIAS)
+                if idx == 0:
+                    img.save('example.jpg')
                 img = np.asarray(img)
                 if channels == 1 or len(img.shape) == 2:
                     img = np.stack([img] * channels)  # HW => CHW
